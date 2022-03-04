@@ -4,7 +4,7 @@ workflows:
     max_build_duration: 120
     instance_type: mac_mini
     environment:
-      node: latest
+      node: latest@12.*
     triggering:
       events:
         - push
@@ -25,4 +25,4 @@ workflows:
           ionic cordova platform remove android --nosave
           ionic cordova platform add android --confirm --no-interactive --noresources          
       - name: Build Android Cordova App
-        script: ionic cordova build android
+        script: ionic cordova build android --
