@@ -1,0 +1,28 @@
+workflows:
+  ionic-cordova-android-workflow:
+    name: Ionic Cordova Android Workflow
+    max_build_duration: 120
+    instance_type: mac_mini
+    environment:
+      node: latest
+    triggering:
+      events:
+        - push
+        - tag
+        - pull_request
+      branch_patterns:
+        - pattern: develop
+          include: true
+          source: true
+    scripts:
+      - name: Install npm dependencies for Ionic Cordova project and update to Cordova version 9
+        script: |
+          npm ci # equivalent of npm install for CI systems. Requires package-lock.json or npm-shrinkwrap.json to be present
+          cvm install 9.0.0
+          cvm use 9.0.0          
+      - name: Setup Cordova Android platform
+        script: |
+          ionic cordova platform remove android --nosave
+          ionic cordova platform add android --confirm --no-interactive --noresources          
+      - name: Build Android Cordova App
+        script: ionic cordova build android
