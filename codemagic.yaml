@@ -29,6 +29,17 @@ workflows:
           ionic cordova platform add android --confirm --no-interactive --noresources          
       - name: Build Android Cordova App
         script: ionic cordova build android --release
+      - name: Set up debug key.properties
+        script: |
+          keytool -genkeypair \
+            -alias androiddebugkey \
+            -keypass android \
+            -keystore ~/.android/debug.keystore \
+            -storepass android \
+            -dname 'CN=Android Debug,O=Android,C=US' \
+            -keyalg 'RSA' \
+            -keysize 2048 \
+            -validity 10000    
       - name: Sign APK
         script: |
           echo $FCI_KEYSTORE | base64 --decode > $FCI_KEYSTORE_PATH
